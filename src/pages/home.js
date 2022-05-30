@@ -14,10 +14,7 @@ function Home() {
                         <br />
                     </Col>
                     <Col >
-                        <h4>Create a portfolio</h4>
-                        <br />
-                        <h5>You can make a simple <strong>portfolio</strong> here and share anywhere!</h5>
-                        <br />
+
                     </Col>
                 </Row>
             </Container>
