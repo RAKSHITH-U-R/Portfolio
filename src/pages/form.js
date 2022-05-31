@@ -1,6 +1,7 @@
 import { Container, Form, Row, Col, Button, InputGroup } from "react-bootstrap"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import React from 'react';
+// import { useEffect} from 'React';
 
 function FormDetails() {
 
@@ -18,6 +19,58 @@ function FormDetails() {
     const [linkedin, setLinkedin] = useState("");
     const [filename, setFilename] = useState("");
     const [area, setArea] = useState("");
+
+    const [inputList, setInputList] = useState([{ project_title: "", project_desc: ""}]);
+    const [experience, setExperience] = useState([{ company: "", role: "", job_desc: ""}]);
+
+
+
+    useEffect(() => {
+            setInputList(inputList);
+            setExperience(experience);
+            
+        })
+
+        const handleInputChange = (e, index) => {
+            const { name, value } = e.target;
+            const list = [...inputList];
+            list[index][name] = value;
+            setInputList(list);
+        };
+    
+        // handle click event of the Remove button
+        const handleRemoveClick = index => {
+            const list = [...inputList];
+            list.splice(index, 1);
+            setInputList(list);
+        };
+    
+        // handle click event of the Add button
+        const handleAddClick = () => {
+            setInputList([...inputList, { project_title: "", project_desc: "" }]);
+        };
+    
+        //Experience
+        // handle input change
+        const handleInputChange3 = (e, index) => {
+            const { name, value} = e.target;
+            const list3 = [...experience];
+            list3[index][name] = value;
+            setExperience(list3);
+        };
+    
+        // handle click event of the Remove button
+        const handleRemoveClick3 = index => {
+            const list3 = [...experience];
+            list3.splice(index, 1);
+            setExperience(list3);
+        };
+    
+        // handle click event of the Add button
+        const handleAddClick3 = () => {
+            setExperience([...experience, { company: "", role: "", job_desc:"" }]);
+        };
+
     return (
         <div style={{
             padding: '0px 300px'
@@ -150,6 +203,92 @@ function FormDetails() {
                                 required />
                         </Form.Group>
                     </Row>
+
+                    <Form.Label>Projects</Form.Label>
+                        {inputList.map((x, i) => {
+                            return(
+                                <div className="project">
+                                    <Form.Group as={Col} controlId="formGridProject">
+                                    <Form.Label></Form.Label>
+                                    <Form.Control 
+                                        type="string" 
+                                        placeholder="Project title" 
+                                        name="project_title" 
+                                        value={x.project_title}
+                                        onChange={e => handleInputChange(e, i)}
+                                    />
+                                    </Form.Group>
+                                    
+                                    <Form.Group as={Col} controlId="formGridDesc">
+                                    <Form.Label></Form.Label>
+                                    <Form.Control 
+                                    as="textarea" 
+                                    rows={2} 
+                                    type="string" 
+                                    placeholder="Description" 
+                                    name="project_desc" 
+                                    value={x.project_desc}
+                                    onChange={e => handleInputChange(e, i)}
+                                    />
+                                    </Form.Group>
+                                    <br/>
+                                    {inputList.length !== 1 && <Button variant="outline-dark" onClick={() =>handleRemoveClick(i)}>Remove</Button>}
+                                    {inputList.length - 1 === i && <Button className="add-btn" variant="outline-dark" onClick={() => handleAddClick(i)}>Add</Button>}
+                                    <br/>
+                                </div>
+                            );
+                        })}  
+
+
+                        <Form.Label>Experience</Form.Label>
+                        {experience.map((x, i) => {
+                            return(
+                                <div className="project">
+                                    <Row>
+                                        <Form.Group as={Col} controlId="formGridProject">
+                                        <Form.Label></Form.Label>
+                                            <Form.Control 
+                                                type="string" 
+                                                placeholder="Company" 
+                                                name="company" 
+                                                value={x.company}
+                                                onChange={e => handleInputChange3(e, i)}
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group as={Col} controlId="formGridProject">
+                                        <Form.Label></Form.Label>
+                                            <Form.Control 
+                                                type="string" 
+                                                placeholder="Role" 
+                                                name="role" 
+                                                value={x.role}
+                                                onChange={e => handleInputChange3(e, i)}
+                                            />
+                                        </Form.Group>
+                                    </Row>
+                                    
+                                    
+                                    <Form.Group as={Col} controlId="formGridDesc">
+                                    <Form.Label></Form.Label>
+                                    <Form.Control 
+                                    as="textarea" 
+                                    rows={2} 
+                                    type="string" 
+                                    placeholder="Description" 
+                                    name="job_desc" 
+                                    value={x.job_desc}
+                                    onChange={e => handleInputChange3(e, i)}
+                                    />
+                                    </Form.Group>
+                                    <br/>
+                                    {experience.length !== 1 && <Button variant="outline-dark" onClick={() =>handleRemoveClick3(i)}>Remove</Button>}
+                                    {experience.length - 1 === i && <Button className="add-btn" variant="outline-dark" onClick={() => handleAddClick3(i)}>Add</Button>}
+                                    <br/>
+                                </div>
+                            );
+                        })}
+
                 </Col>
             </Form>
         </div>
