@@ -7,23 +7,24 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   return (
-    // <div>
-    //   <NavbarContent />
-    //   <Home />
-    //   {/* <FormDetails /> */}
-    // </div>
-
-    <BrowserRouter>
+    
+<div>
+    {/* <BrowserRouter>
       <Routes>
         <Route path="/" element={<NavbarContent />}>
           <Route path="/home" element={<Home />} />
-          {/* <Route path="blogs" element={<Blogs />} />
+          <Route path="blogs" element={<Blogs />} />
           <Route path="contact" element={<Contact />} />
-          <Route path="*" element={<NoPage />} /> */}
+          <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter> */}
 
+          
+     {/* <NavbarContent /> */}
+      {/* <Home /> */}
+     <FormDetails />
+    </div>
 
 
     // <Router>
