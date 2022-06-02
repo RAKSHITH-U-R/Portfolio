@@ -21,9 +21,9 @@ function App() {
     </BrowserRouter> */}
 
           
-     {/* <NavbarContent /> */}
-      {/* <Home /> */}
-     <FormDetails />
+     <NavbarContent />
+      <Home />
+     {/* <FormDetails /> */}
     </div>
 
 
