@@ -5,11 +5,16 @@ import { Link } from "react-router-dom";
 // import { useState } from 'react';
 
 import { useState, useEffect } from 'react';
+import { useEffect} from 'React';
 import React from 'react';
-// import { useEffect} from 'React';
 
 function FormDetails() {
 
+
+    let history = useHistory();
+    const auth = getAuth();
+    
+    const [userData, setUserData] = useState([]);
     const [name, setName] = useState("");
     const [objective, setObjective] = useState("");
     const [qualification, setQualification] = useState("");
@@ -17,7 +22,6 @@ function FormDetails() {
     const [email, setEmail] = useState("");
     const [tech, setTech] = useState("");
     const [fileUrl, setFileUrl] = useState(null);
-    const [platform, setPlatform] = useState("");
     const [skills, setSkills] = useState("");
     const [about, setAbout] = useState("");
     const [github, setGithub] = useState("");
@@ -25,8 +29,64 @@ function FormDetails() {
     const [filename, setFilename] = useState("");
     const [area, setArea] = useState("");
 
-    const [inputList, setInputList] = useState([{ project_title: "", project_desc: "" }]);
-    const [experience, setExperience] = useState([{ company: "", role: "", job_desc: "" }]);
+    const [platform, setPlatform] = useState("");
+    
+    const [inputList, setInputList] = useState([{ project_title: "", project_desc: ""}]);
+    const [experience, setExperience] = useState([{ company: "", role: "", job_desc: ""}]);
+
+
+
+
+    const[update, setUpdate] = useState(false);
+    const[remove, setRemove] = useState(false);
+    const[portfolio, setPortfolio] = useState(false);
+    const[submit, setSubmit] = useState(true);
+    
+    useEffect(() => {
+        onAuthStateChanged(auth, (currentUser) => {
+            onSnapshot(doc(db, "users", auth.currentUser.email), (doc) => {
+                setUserData(doc.data());
+                console.log(doc.data());
+            });
+        });
+
+    }, []);
+
+    useEffect(() => {
+        if (userData && userData.length !== 0) {
+            setName(userData.name);
+            setObjective(userData.headline);
+            setQualification(userData.degree);
+            setCollege(userData.college);
+            setEmail(userData.email);
+            setTech(userData.tech);
+            setFileUrl(userData.fileUrl);
+            setFilename(userData.filename);
+            setSkills(userData.skills);
+            setAbout(userData.about);
+            setInputList(userData.inputList);
+            setExperience(userData.experience);
+            setGithub(userData.github);
+            setLinkedin(userData.linkedin);
+            setPortfolio(userData.portfolio);
+            setSubmit(userData.submit);
+        }
+
+    }, [userData])
+
+    // File upload
+    const onFileChange = async (e) => {
+        const storage = getStorage();
+        const file = e.target.files[0];
+        const fname = file.name;
+        setFilename(fname);
+        const storageRef = ref(storage, `${file.name}`);
+        await uploadBytesResumable(storageRef, file);
+        console.log(name);
+        await getDownloadURL(ref(storage, storageRef)).then((url) => {
+            setFileUrl(url);
+        })
+      };
 
 
 
