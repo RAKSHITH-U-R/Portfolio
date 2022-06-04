@@ -11,7 +11,7 @@ import { Navigate, NavLink, useNavigate } from 'react-router-dom'
 import home from '../pages/home'
 
 const NavbarContent = () => {
-    // let history = useNavigate();
+    let navigate= useNavigate();
     const auth = getAuth();
     const provider = new GoogleAuthProvider();
 
@@ -45,7 +45,7 @@ const NavbarContent = () => {
     const logOut = () => {
         signOut(auth).then(() => {
             console.log('Sign-out successful');
-            Navigate('/home');
+            navigate('/home');
         }).catch((error) => {
             // An error happened.
         });
