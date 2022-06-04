@@ -1,10 +1,17 @@
 import { Container, Row, Col, Button, ToastContainer } from "react-bootstrap"
+import FormDetails from './form'
+import { Link } from "react-router-dom";
+import NavbarContent from '../components/Navbar';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 function Home() {
     return (
+
         <div className="home">
+            <NavbarContent />
             <Container>
                 <Row className="row">
                     <Col >
@@ -14,11 +21,12 @@ function Home() {
                         <br />
                     </Col>
                     <Col >
+                        <Link to="formDetails" >FormDetails</Link>
 
                     </Col>
                 </Row>
             </Container>
-        </div>
+        </div >
     );
 }
 

@@ -1,4 +1,6 @@
+import NavbarContent from '../components/Navbar';
 import { Container, Form, Row, Col, Button, InputGroup } from "react-bootstrap"
+import { Link } from "react-router-dom";
 import { useState } from 'react';
 import React from 'react';
 
@@ -21,7 +23,7 @@ function FormDetails() {
     return (
         <div style={{
             padding: '0px 300px'
-        }}>
+        }}> <NavbarContent />
             <Form className="form" >
                 <Col className="column col1">
                     <Row className="mb-3">
@@ -151,9 +153,12 @@ function FormDetails() {
                         </Form.Group>
                     </Row>
                 </Col>
+                <Link to="portfolio" target="_blank">Portfolio</Link>
             </Form>
         </div>
     );
 }
 
 export default FormDetails;
+
+{/* <Link to={location => `/portfolio/items?id=${auth.currentUser.email}`} target="_blank">Portfolio</Link> */ }
