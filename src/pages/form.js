@@ -3,7 +3,7 @@ import { Container, Form, Row, Col, Button, InputGroup } from "react-bootstrap"
 
 import { Link } from "react-router-dom";
 
-// import { db } from "../firebase";
+import { db } from "../firebase";
 import { doc, setDoc, deleteDoc, onSnapshot } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
@@ -45,59 +45,59 @@ function FormDetails() {
     const [portfolio, setPortfolio] = useState(false);
     const [submit, setSubmit] = useState(true);
 
-    // useEffect(() => {
-    //     onAuthStateChanged(auth, (currentUser) => {
-    //         onSnapshot(doc(db, "users", auth.currentUser.email), (doc) => {
-    //             setUserData(doc.data());
-    //             console.log(doc.data());
-    //         });
-    //     });
-
-    // }, []);
-
     useEffect(() => {
-        if (userData && userData.length !== 0) {
-            setName(userData.name);
-            setObjective(userData.headline);
-            setQualification(userData.degree);
-            setCollege(userData.college);
-            setEmail(userData.email);
-            setTech(userData.tech);
-            setFileUrl(userData.fileUrl);
-            setFilename(userData.filename);
-            setSkills(userData.skills);
-            setAbout(userData.about);
-            setInputList(userData.inputList);
-            setExperience(userData.experience);
-            setGithub(userData.github);
-            setLinkedin(userData.linkedin);
-            setPortfolio(userData.portfolio);
-            setSubmit(userData.submit);
-        }
+        onAuthStateChanged(auth, (currentUser) => {
+            onSnapshot(doc(db, "users", auth.currentUser.email), (doc) => {
+                setUserData(doc.data());
+                console.log(doc.data());
+            });
+        });
 
-    }, [userData])
+    }, []);
+
+    // useEffect(() => {
+    //     if (userData && userData.length !== 0) {
+    //         setName(userData.name);
+    //         setObjective(userData.headline);
+    //         setQualification(userData.degree);
+    //         setCollege(userData.college);
+    //         setEmail(userData.email);
+    //         setTech(userData.tech);
+    //         setFileUrl(userData.fileUrl);
+    //         setFilename(userData.filename);
+    //         setSkills(userData.skills);
+    //         setAbout(userData.about);
+    //         setInputList(userData.inputList);
+    //         setExperience(userData.experience);
+    //         setGithub(userData.github);
+    //         setLinkedin(userData.linkedin);
+    //         setPortfolio(userData.portfolio);
+    //         setSubmit(userData.submit);
+    //     }
+
+    // }, [userData])
 
     // File upload
-    const onFileChange = async (e) => {
-        const storage = getStorage();
-        const file = e.target.files[0];
-        const fname = file.name;
-        setFilename(fname);
-        const storageRef = ref(storage, `${file.name}`);
-        await uploadBytesResumable(storageRef, file);
-        console.log(name);
-        await getDownloadURL(ref(storage, storageRef)).then((url) => {
-            setFileUrl(url);
-        })
-    };
+    // const onFileChange = async (e) => {
+    //     const storage = getStorage();
+    //     const file = e.target.files[0];
+    //     const fname = file.name;
+    //     setFilename(fname);
+    //     const storageRef = ref(storage, `${file.name}`);
+    //     await uploadBytesResumable(storageRef, file);
+    //     console.log(name);
+    //     await getDownloadURL(ref(storage, storageRef)).then((url) => {
+    //         setFileUrl(url);
+    //     })
+    // };
 
 
 
-    useEffect(() => {
-        setInputList(inputList);
-        setExperience(experience);
+    // useEffect(() => {
+    //     setInputList(inputList);
+    //     setExperience(experience);
 
-    })
+    // })
 
     const handleInputChange = (e, index) => {
         const { name, value } = e.target;
@@ -139,11 +139,95 @@ function FormDetails() {
         setExperience([...experience, { company: "", role: "", job_desc: "" }]);
     };
 
+
+    const handleSubmit = async (e) => {
+        console.log(filename);
+        e.preventDefault();
+
+        const data =  {
+            name: name,
+            objective: objective,
+            qualification: qualification,
+            college: college,
+            email: email,
+            tech: tech,
+            skills: skills,
+            fileUrl: fileUrl,
+            about: about,
+            inputList: inputList,
+            experience: experience,
+            github: github,
+            linkedin: linkedin,
+            filename: filename,
+            area : area,
+            about : about
+          };
+          
+        await setDoc(doc(db, "users", auth.currentUser.email), data).then((result) => {
+            setUpdate(true);
+            setRemove(true);
+            setPortfolio(true);
+            setSubmit(false);
+
+            }).catch((error) => {
+                console.log("Error");
+            });
+            setName(name);
+            setObjective(objective);
+            setQualification(qualification);
+            setCollege(college);
+            setEmail(email);
+            setTech(tech);
+            setFileUrl(fileUrl);
+            setSkills(skills);
+            setAbout(about);
+            setFilename(filename);
+            setInputList(inputList);
+            setExperience(experience);
+            setGithub(github);
+            setLinkedin(linkedin);
+            setArea(area);
+            setAbout(about);
+
+      };
+      
+      const updateFunc = () => {
+          console.log("Update success!");
+      };
+
+    //   const removeFunc = async () => {
+    //     await deleteDoc(doc(db, "users", auth.currentUser.email)).then((result) => {
+    //         setName("");
+    //         setHeadline("");
+    //         setDegree("");
+    //         setCollege("");
+    //         setEmail("");
+    //         setTech("");
+    //         setFileUrl("");
+    //         setSkills("");
+    //         setAbout("");
+    //         setFileUrl("");
+    //         setFilename("");
+    //         setInputList([{ project_title: "", project_desc: ""}]);
+    //         setExperience([{ company: "", role: "", job_desc: ""}]);
+    //         setGithub("");
+    //         setLinkedin("");
+    //         setUpdate(false);
+    //         setRemove(false);
+
+    //         }).catch((error) => {
+    //             console.log('error');
+    //         });
+    //     };
+
+
+
     return (
         <div style={{
             padding: '0px 300px'
         }}> <NavbarContent />
-            <Form className="form" >
+            <Form className="form" onSubmit={handleSubmit}>
+            <Button type="submit">Submit</Button>
                 <Col className="column col1">
                     <Row className="mb-3">
                         <Form.Group as={Col} controlId="formGridName">
