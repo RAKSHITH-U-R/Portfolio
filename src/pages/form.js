@@ -2,18 +2,21 @@ import NavbarContent from '../components/Navbar';
 import { Container, Form, Row, Col, Button, InputGroup } from "react-bootstrap"
 
 import { Link } from "react-router-dom";
-// import { useState } from 'react';
+
+// import { db } from "../firebase";
+import { doc, setDoc, deleteDoc, onSnapshot } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 
 import { useState, useEffect } from 'react';
-import { useEffect} from 'React';
 import React from 'react';
 
 function FormDetails() {
 
 
-    let history = useHistory();
+    // let history = useHistory();
     const auth = getAuth();
-    
+
     const [userData, setUserData] = useState([]);
     const [name, setName] = useState("");
     const [objective, setObjective] = useState("");
@@ -30,27 +33,27 @@ function FormDetails() {
     const [area, setArea] = useState("");
 
     const [platform, setPlatform] = useState("");
-    
-    const [inputList, setInputList] = useState([{ project_title: "", project_desc: ""}]);
-    const [experience, setExperience] = useState([{ company: "", role: "", job_desc: ""}]);
+
+    const [inputList, setInputList] = useState([{ project_title: "", project_desc: "" }]);
+    const [experience, setExperience] = useState([{ company: "", role: "", job_desc: "" }]);
 
 
 
 
-    const[update, setUpdate] = useState(false);
-    const[remove, setRemove] = useState(false);
-    const[portfolio, setPortfolio] = useState(false);
-    const[submit, setSubmit] = useState(true);
-    
-    useEffect(() => {
-        onAuthStateChanged(auth, (currentUser) => {
-            onSnapshot(doc(db, "users", auth.currentUser.email), (doc) => {
-                setUserData(doc.data());
-                console.log(doc.data());
-            });
-        });
+    const [update, setUpdate] = useState(false);
+    const [remove, setRemove] = useState(false);
+    const [portfolio, setPortfolio] = useState(false);
+    const [submit, setSubmit] = useState(true);
 
-    }, []);
+    // useEffect(() => {
+    //     onAuthStateChanged(auth, (currentUser) => {
+    //         onSnapshot(doc(db, "users", auth.currentUser.email), (doc) => {
+    //             setUserData(doc.data());
+    //             console.log(doc.data());
+    //         });
+    //     });
+
+    // }, []);
 
     useEffect(() => {
         if (userData && userData.length !== 0) {
@@ -86,7 +89,7 @@ function FormDetails() {
         await getDownloadURL(ref(storage, storageRef)).then((url) => {
             setFileUrl(url);
         })
-      };
+    };
 
 
 
