@@ -18,7 +18,8 @@ function App() {
         <Route path="/formDetails" element={<><FormDetails /></>} />
         <Route path="/formDetails/portfolio" element={<Portfolio />} />
       </Routes>
-    </BrowserRouter >
+ </BrowserRouter >
+
 
 
 
