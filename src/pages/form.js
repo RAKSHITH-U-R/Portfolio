@@ -37,9 +37,6 @@ function FormDetails() {
     const [inputList, setInputList] = useState([{ project_title: "", project_desc: "" }]);
     const [experience, setExperience] = useState([{ company: "", role: "", job_desc: "" }]);
 
-
-
-
     const [update, setUpdate] = useState(false);
     const [remove, setRemove] = useState(false);
     const [portfolio, setPortfolio] = useState(false);
@@ -50,10 +47,16 @@ function FormDetails() {
             onSnapshot(doc(db, "users", auth.currentUser.email), (doc) => {
                 setUserData(doc.data());
                 console.log(doc.data());
+
             });
         });
 
     }, []);
+
+
+    // useEffect(() => {
+    //     console.log("hi");
+    // })
 
     // useEffect(() => {
     //     if (userData && userData.length !== 0) {
@@ -78,26 +81,20 @@ function FormDetails() {
     // }, [userData])
 
     // File upload
-    // const onFileChange = async (e) => {
-    //     const storage = getStorage();
-    //     const file = e.target.files[0];
-    //     const fname = file.name;
-    //     setFilename(fname);
-    //     const storageRef = ref(storage, `${file.name}`);
-    //     await uploadBytesResumable(storageRef, file);
-    //     console.log(name);
-    //     await getDownloadURL(ref(storage, storageRef)).then((url) => {
-    //         setFileUrl(url);
-    //     })
-    // };
+    const onFileChange = async (e) => {
+        const storage = getStorage();
+        console.log('storage')
+        const file = e.target.files[0];
+        const fname = file.name;
+        setFilename(fname);
+        const storageRef = ref(storage, '/users/'+ fname);
+        await uploadBytesResumable(storageRef, file);
+        console.log(name);
+        await getDownloadURL(ref(storage, storageRef)).then((url) => {
+            setFileUrl(url);
+        })
+    };
 
-
-
-    // useEffect(() => {
-    //     setInputList(inputList);
-    //     setExperience(experience);
-
-    // })
 
     const handleInputChange = (e, index) => {
         const { name, value } = e.target;
@@ -164,6 +161,7 @@ function FormDetails() {
           };
           
         await setDoc(doc(db, "users", auth.currentUser.email), data).then((result) => {
+            console.log("update done");
             setUpdate(true);
             setRemove(true);
             setPortfolio(true);
@@ -187,19 +185,19 @@ function FormDetails() {
             setGithub(github);
             setLinkedin(linkedin);
             setArea(area);
-            setAbout(about);
+            setPlatform(platform);
 
       };
       
-      const updateFunc = () => {
-          console.log("Update success!");
-      };
+    //   const updateFunc = () => {
+    //       console.log("Update success!");
+    //   };
 
     //   const removeFunc = async () => {
     //     await deleteDoc(doc(db, "users", auth.currentUser.email)).then((result) => {
     //         setName("");
-    //         setHeadline("");
-    //         setDegree("");
+    //         setObjective("");
+    //         setQualification("");
     //         setCollege("");
     //         setEmail("");
     //         setTech("");
@@ -212,6 +210,8 @@ function FormDetails() {
     //         setExperience([{ company: "", role: "", job_desc: ""}]);
     //         setGithub("");
     //         setLinkedin("");
+    //         setArea("");
+    //         setPlatform("");
     //         setUpdate(false);
     //         setRemove(false);
 
@@ -227,7 +227,9 @@ function FormDetails() {
             padding: '0px 300px'
         }}> <NavbarContent />
             <Form className="form" onSubmit={handleSubmit}>
+            {submit?
             <Button type="submit">Submit</Button>
+            :<></>}
                 <Col className="column col1">
                     <Row className="mb-3">
                         <Form.Group as={Col} controlId="formGridName">
@@ -279,7 +281,7 @@ function FormDetails() {
                             <Form.Label>Profile pic</Form.Label>
                             <Form.Control type="file"
                                 accept="image/*"
-                            // onChange={onFileChange}
+                                onChange={onFileChange}
                             />
                         </Form.Group>
                     </Row>
@@ -319,7 +321,7 @@ function FormDetails() {
                             <Form.Label>Platform</Form.Label>
                             <Form.Control type="string" placeholder="Windows, Mac"
                                 value={platform}
-                                onChange={(e) => setSkills(e.target.value)}
+                                onChange={(e) => setPlatform(e.target.value)}
                                 required />
                         </Form.Group>
                     </Row>
