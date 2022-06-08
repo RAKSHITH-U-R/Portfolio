@@ -52,42 +52,40 @@ function FormDetails() {
         });
 
     }, []);
+    
+    useEffect(() => {
+        if (userData && userData.length !== 0) {
+            setName(userData.name);
+            setObjective(userData.objective);
+            setQualification(userData.qualification);
+            setCollege(userData.college);
+            setEmail(userData.email);
+            setTech(userData.tech);
+            setFileUrl(userData.fileUrl);
+            setFilename(userData.filename);
+            setSkills(userData.skills);
+            setAbout(userData.about);
+            setInputList(userData.inputList);
+            setExperience(userData.experience);
+            setGithub(userData.github);
+            setLinkedin(userData.linkedin);
+            setPlatform(userData.platform);
+            setArea(userData.area);
+            console.log(area);
+            console.log(filename);
+        }
 
-
-    // useEffect(() => {
-    //     console.log("hi");
-    // })
-
-    // useEffect(() => {
-    //     if (userData && userData.length !== 0) {
-    //         setName(userData.name);
-    //         setObjective(userData.headline);
-    //         setQualification(userData.degree);
-    //         setCollege(userData.college);
-    //         setEmail(userData.email);
-    //         setTech(userData.tech);
-    //         setFileUrl(userData.fileUrl);
-    //         setFilename(userData.filename);
-    //         setSkills(userData.skills);
-    //         setAbout(userData.about);
-    //         setInputList(userData.inputList);
-    //         setExperience(userData.experience);
-    //         setGithub(userData.github);
-    //         setLinkedin(userData.linkedin);
-    //         setPortfolio(userData.portfolio);
-    //         setSubmit(userData.submit);
-    //     }
-
-    // }, [userData])
+    }, [userData])
 
     // File upload
     const onFileChange = async (e) => {
         const storage = getStorage();
-        console.log('storage')
+        console.log(storage)
         const file = e.target.files[0];
+        console.log(file.name);
         const fname = file.name;
         setFilename(fname);
-        const storageRef = ref(storage, '/users/'+ fname);
+        const storageRef = ref(storage, `${file.name}`);
         await uploadBytesResumable(storageRef, file);
         console.log(name);
         await getDownloadURL(ref(storage, storageRef)).then((url) => {
@@ -157,7 +155,8 @@ function FormDetails() {
             linkedin: linkedin,
             filename: filename,
             area : area,
-            about : about
+            about : about,
+            platform : platform
           };
           
         await setDoc(doc(db, "users", auth.currentUser.email), data).then((result) => {
