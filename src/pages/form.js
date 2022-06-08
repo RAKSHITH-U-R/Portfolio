@@ -52,12 +52,7 @@ function FormDetails() {
         });
 
     }, []);
-
-
-    // useEffect(() => {
-    //     console.log("hi");
-    // })
-
+    
     useEffect(() => {
         if (userData && userData.length !== 0) {
             setName(userData.name);
@@ -76,8 +71,8 @@ function FormDetails() {
             setLinkedin(userData.linkedin);
             setPlatform(userData.platform);
             setArea(userData.area);
-            // setPortfolio(userData.portfolio);
-            // setSubmit(userData.submit);
+            console.log(area);
+            console.log(filename);
         }
 
     }, [userData])
