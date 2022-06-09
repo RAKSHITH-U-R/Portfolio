@@ -160,7 +160,7 @@ function FormDetails() {
           };
           
         await setDoc(doc(db, "users", auth.currentUser.email), data).then((result) => {
-            console.log("update done");
+            console.log("data uploaded");
             setUpdate(true);
             setRemove(true);
             setPortfolio(true);
@@ -188,9 +188,68 @@ function FormDetails() {
 
       };
       
-    //   const updateFunc = () => {
-    //       console.log("Update success!");
-    //   };
+      const updateFunc = () => {
+        // setUpdate(false);
+        // setRemove(true);
+        // setPortfolio(true);
+        // setSubmit(true);
+          handleSubmit();
+          
+          console.log("Update success!");
+      };
+
+    //own func
+      const removeFunc = async () => {
+
+        const data =  {
+            name: '',
+            objective: "",
+            qualification: "",
+            college: "",
+            email: "",
+            tech: "",
+            skills: "",
+            fileUrl: null,
+            about: "",
+            inputList: [{ project_title: "", project_desc: "" }],
+            experience: [{ company: "", role: "", job_desc: "" }],
+            github: "",
+            linkedin: "",
+            filename: "",
+            area : "",
+            about : "",
+            platform : ""
+          };
+
+        await setDoc(doc(db, "users", auth.currentUser.email),data).then((result) => {
+            console.log("Remove started");
+            setName("");
+            setObjective("");
+            setQualification("");
+            setCollege("");
+            setEmail("");
+            setTech("");
+            setFileUrl("");
+            setSkills("");
+            setAbout("");
+            setFileUrl("");
+            setFilename("");
+            setInputList([{ project_title: "", project_desc: ""}]);
+            setExperience([{ company: "", role: "", job_desc: ""}]);
+            setGithub("");
+            setLinkedin("");
+            setArea("");
+            setPlatform("");
+            setUpdate(false);
+            setRemove(false);
+            console.log("Removed");
+            }).catch((error) => {
+                console.log('error');
+            });
+
+      }
+
+
 
     //   const removeFunc = async () => {
     //     await deleteDoc(doc(db, "users", auth.currentUser.email)).then((result) => {
@@ -228,6 +287,12 @@ function FormDetails() {
             <Form className="form" onSubmit={handleSubmit}>
             {submit?
             <Button type="submit">Submit</Button>
+            :<></>}
+            {remove?
+            <Button onClick={removeFunc}>Remove</Button>
+            :<></>}
+            {update?
+            <Button onClick={updateFunc}>update</Button>
             :<></>}
                 <Col className="column col1">
                     <Row className="mb-3">
